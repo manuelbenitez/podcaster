@@ -2,26 +2,37 @@ import Image from "next/image";
 import React from "react";
 import { IPodcastCard } from "./PodcastCard.types";
 import styles from "./PodcastCard.module.scss";
+import { useRouter } from "next/router";
 
-const PodcastCard = ({ feed }: IPodcastCard) => {
+const PodcastCards = ({ feed }: IPodcastCard) => {
   const { entry } = feed;
+  const router = useRouter();
+
+  const handleClick = (id: string) => {
+    router.push(`/podcast/${id}`);
+  };
   return (
-    <>
-      {feed.entry &&
-        feed.entry.map((podcast, index) => (
-          <div key={index} className={styles.podcastCard}>
+    <div className={styles.container}>
+      {entry &&
+        entry.map((podcast, index) => (
+          <div
+            key={index}
+            className={styles.podcastCard}
+            onClick={() => handleClick(podcast.id.attributes["im:id"])}
+          >
             <Image
               src={podcast["im:image"][0].label}
               alt=""
-              width={20}
-              height={20}
+              width={100}
+              height={100}
+              className={styles.image}
             />
-            <p>{podcast["im:name"].label}</p>
+            <h1>{podcast["im:name"].label}</h1>
             <p>Author: {podcast["im:artist"].label}</p>
           </div>
         ))}
-    </>
+    </div>
   );
 };
 
-export default PodcastCard;
+export default PodcastCards;

@@ -4,7 +4,8 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import { TOP_100_ITUNES_PODCASTS_URL } from "./constants";
 import { IPodcastCard } from "@/components/PodcastCard/PodcastCard.types";
-import PodcastCard from "@/components/PodcastCard/PodcastCard";
+import PodcastCards from "@/components/PodcastCard/PodcastCard";
+import Navbar from "@/components/Navbar/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,8 @@ export default function Home({ podcasts }: IPodcastProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <PodcastCard feed={feed} />
+        <Navbar />
+        <PodcastCards feed={feed} />
       </main>
     </>
   );

@@ -12,15 +12,13 @@ interface IPodcastProps {
 export default function Home({ podcasts }: IPodcastProps) {
   const { feed } = podcasts;
 
-  console.log(feed);
-
-  // const addPodcastAction = useStoreActions(
-  //   (action) => action.podcasts.addPodcast
-  // );
+  const addPodcastAction = useStoreActions(
+    (action) => action.podcasts.addPodcast
+  );
 
   useEffect(() => {
     // feed.forEach(())
-    console.log(feed);
+    console.log(feed.entry);
   });
   return (
     <>

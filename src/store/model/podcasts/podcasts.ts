@@ -1,9 +1,33 @@
-import { action } from "easy-peasy";
+import { action, thunk } from "easy-peasy";
+import { fetchPodcasts } from "../service";
 import { IPodcastsModel } from "./podcasts.types";
 
 export const PodcastModel: IPodcastsModel = {
-  podcasts: [],
-  addPodcast: action((state, payload) => {
-    state.podcasts.push(payload);
+  podcasts: {
+    feed: {
+      entry: [
+        {
+          id: { label: "", attributes: { "im:id": "" } },
+          "im:artist": { label: "" },
+          "im:image": [{ label: "" }],
+          "im:name": { label: "" },
+          "im:price": { label: "" },
+        },
+      ],
+    },
+  },
+
+  firstTimeFetch: false,
+  lastFechted: new Date(),
+
+  setPodcasts: action((state, payload) => {
+    state.podcasts = payload;
   }),
+
+  setLastFetched: action((state, payload) => {
+    state.lastFechted = payload;
+  }),
+  setFirstTimeFetch: action((state, payload) => {
+    state.firstTimeFetch = payload
+  })
 };

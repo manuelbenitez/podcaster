@@ -1,14 +1,15 @@
-import { Action } from "easy-peasy";
+import { IPodcastCard } from "@/components/PodcastCard/PodcastCard.types";
+import { Action, Thunk } from "easy-peasy";
 
+export type AppService = {
+  fetchPodcasts: () => Promise<IPodcastCard>;
+};
 export interface IPodcastsModel {
-  podcasts: IPodcast[];
+  podcasts: IPodcastCard;
+  lastFechted: Date;
+  firstTimeFetch: boolean;
 
-  addPodcast: Action<IPodcastModel | IPodcast>;
-}
-
-export interface IPodcast {
-  image: string;
-  title: string;
-  author: string;
-  description: string;
+  setPodcasts: Action<IPodcastModel, IPodcastCard>;
+  setLastFetched: Action<IPodcastsModel, Date>;
+  setFirstTimeFetch: Action<IPodcastsModel, boolean>;
 }

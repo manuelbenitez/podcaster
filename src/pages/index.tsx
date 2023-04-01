@@ -1,24 +1,31 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
-import { IPodcastCard } from "@/components/PodcastCard/PodcastCard.types";
 import PodcastCards from "@/components/PodcastCard/PodcastCard";
 import { fetchPodcasts } from "@/store/model/service";
-import { useStoreActions } from "../store";
-import { useEffect } from "react";
+import { useStoreActions, useStoreState } from "../store";
+import { useCallback, useEffect } from "react";
 
-interface IPodcastProps {
-  podcasts: IPodcastCard;
-}
-export default function Home({ podcasts }: IPodcastProps) {
-  const { feed } = podcasts;
+export default function Home() {
+  const addPodcastAction = useStoreActions((action) => action.podcasts);
+  const state = useStoreState((state) => state.podcasts);
 
-  const addPodcastAction = useStoreActions(
-    (action) => action.podcasts.addPodcast
-  );
+  const fetchData = useCallback(async () => {
+    const today = new Date();
+    const difference = state.lastFechted?.getTime() - today.getTime();
+    const totalDays = Math.abs(difference / (1000 * 3600 * 24));
+
+    if (state.firstTimeFetch === false || totalDays >= 1) {
+      addPodcastAction.setFirstTimeFetch(true);
+      const podcasts = await fetchPodcasts();
+      if (podcasts) {
+        addPodcastAction.setPodcasts(podcasts);
+        addPodcastAction.setLastFetched(new Date());
+      }
+    }
+  }, [addPodcastAction, state.lastFechted, state.firstTimeFetch]);
 
   useEffect(() => {
-    // feed.forEach(())
-    console.log(feed.entry);
+    fetchData();
   });
   return (
     <>
@@ -29,18 +36,8 @@ export default function Home({ podcasts }: IPodcastProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <PodcastCards feed={feed} />
+        {state.podcasts && <PodcastCards feed={state.podcasts.feed} />}
       </main>
     </>
   );
-}
-
-export async function getStaticProps() {
-  const podcasts = await fetchPodcasts();
-
-  return {
-    props: {
-      podcasts,
-    },
-  };
 }

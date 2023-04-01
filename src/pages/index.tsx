@@ -1,19 +1,27 @@
 import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
-import { TOP_100_ITUNES_PODCASTS_URL } from "./constants";
 import { IPodcastCard } from "@/components/PodcastCard/PodcastCard.types";
 import PodcastCards from "@/components/PodcastCard/PodcastCard";
-import Navbar from "@/components/Navbar/Navbar";
-
-const inter = Inter({ subsets: ["latin"] });
+import { fetchPodcasts } from "@/store/model/service";
+import { useStoreActions } from "../store";
+import { useEffect } from "react";
 
 interface IPodcastProps {
   podcasts: IPodcastCard;
 }
 export default function Home({ podcasts }: IPodcastProps) {
   const { feed } = podcasts;
+
+  console.log(feed);
+
+  // const addPodcastAction = useStoreActions(
+  //   (action) => action.podcasts.addPodcast
+  // );
+
+  useEffect(() => {
+    // feed.forEach(())
+    console.log(feed);
+  });
   return (
     <>
       <Head>
@@ -23,7 +31,6 @@ export default function Home({ podcasts }: IPodcastProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <Navbar />
         <PodcastCards feed={feed} />
       </main>
     </>
@@ -31,9 +38,7 @@ export default function Home({ podcasts }: IPodcastProps) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(TOP_100_ITUNES_PODCASTS_URL);
-
-  const podcasts = await res.json();
+  const podcasts = await fetchPodcasts();
 
   return {
     props: {

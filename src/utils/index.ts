@@ -12,7 +12,7 @@ export function refactorTime(milliseconds: number): string {
     return num.toString().padStart(2, "0");
   }
 
-  return `${padTo2Digits(hours)}:${padTo2Digits(minutes)}`;
+  return `${padTo2Digits(hours % 24)}:${padTo2Digits(minutes % 60)}`;
 }
 
 export function calculateDays(lastFetched: Date): number {

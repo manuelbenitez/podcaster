@@ -15,7 +15,7 @@ export interface IPodcastDetails {
     {
       //Details
       trackName: string;
-      artworkUrl: string | undefined;
+      artworkUrl100: string;
       artistName: string | undefined;
       description: string | undefined;
 

@@ -1,18 +1,53 @@
 .page {
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
+  gap: 100px;
   padding: 1rem;
 }
 
 .details {
-  width: 20%;
+  width: 320px;
+  padding: 0.7rem 0.5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 
   box-shadow: 1px 1px 2px 1px rgba(163, 163, 163, 0.384);
+
+  .image {
+    margin: auto;
+  }
+}
+
+.table {
+  width: 100%;
+}
+
+.title {
+  text-align: start;
+}
+
+.time {
+  text-align: center;
+}
+
+.artist {
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+  border-top: 1px solid rgba(221, 221, 221, 0.596);
+  border-bottom: 1px solid rgba(221, 221, 221, 0.596);
+}
+
+.description {
+  font-style: italic;
 }
 
 .episodes {
-  width: 70%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
 .count {
@@ -22,4 +57,19 @@
 
 .table {
   padding: 5px 0 5px 10px;
+  box-shadow: 1px 1px 2px 1px rgba(163, 163, 163, 0.384);
+  padding: 1.5rem 0.7rem;
+}
+
+.tableBody {
+  .episode:nth-child(odd) {
+    background-color: rgba(185, 185, 185, 0.123);
+    height: 40px;
+  }
+}
+
+.episode {
+  .trackname {
+    color: rgb(55, 101, 138);
+  }
 }

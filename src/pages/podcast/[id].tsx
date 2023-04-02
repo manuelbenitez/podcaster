@@ -1,83 +1,110 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { API_ORIGINS_URL } from "../constants";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "../../styles/PodcastDetailsPage.module.scss";
-import { IEpisodes } from "./PodcastDetailsPage.types";
-
+import { useStoreActions, useStoreState } from "@/store";
+import { fetchPodcastsDetails } from "@/store/model/service";
+import { IPodcastDetails } from "@/store/model/details/details.types";
 const PodcastDetailsPage = () => {
   const router = useRouter();
+  const { id, summary } = router.query;
 
-  const [podcastDetails, setPodcastDetails] = useState<any>();
-  const [episodesCount, setEpisodesCount] = useState<number>();
-  const [episodes, setEpisodes] = useState<Array<IEpisodes>>([]);
-  const { id } = router.query;
+  const detailsActions = useStoreActions((actions) => actions.details);
+  const detailsState = useStoreState((state) => state.details);
 
-  const ITUNES_URL = `https://itunes.apple.com/lookup?id=${id}&media=podcast&entity=podcastEpisode&limit=20`;
+  const [details, setDetails] = useState<IPodcastDetails>();
 
-  const fetchPodcastDetails = async () => {
-    try {
-      const res = await fetch(
-        `${API_ORIGINS_URL}${encodeURIComponent(ITUNES_URL)}`
+  const fetchData = useCallback(async () => {
+    if (detailsState.detailsList.length === 0) {
+      const data = await fetchPodcastsDetails(id);
+      const { results } = JSON.parse(data.contents);
+
+      if (results) {
+        detailsActions.setDetails({
+          lastFetched: new Date(),
+          trackId: results[0].trackId,
+          results: results,
+          summary: summary,
+        });
+      }
+    } else {
+      const podcastDetails = detailsState.detailsList.find(
+        (detail) => detail.trackId.toString() === id
       );
 
-      const data = await res.json();
+      if (podcastDetails) {
+        const today = new Date();
+        const difference =
+          podcastDetails.lastFetched?.getTime() - today.getTime();
+        const totalDays = Math.abs(difference / (1000 * 3600 * 24));
 
-      if (data) {
-        const parsedData = JSON.parse(data.contents);
+        if (totalDays >= 1) {
+          const data = await fetchPodcastsDetails(id);
+          const { results } = JSON.parse(data.contents);
 
-        console.log(parsedData);
-
-        setEpisodesCount(parsedData.resultCount - 1);
-
-        parsedData.results &&
-          parsedData.results.forEach((episode: IEpisodes, index: number) => {
-            if (index > 0) {
-              setEpisodes([
-                ...episodes,
-                {
-                  trackName: episode.trackName,
-                  releaseDate: episode.releaseDate,
-                  trackTimeMillis: episode.trackTimeMillis,
-                },
-              ]);
-            }
+          detailsActions.updateDetails({
+            lastFetched: new Date(),
+            trackId: results[0].trackId,
+            summary: summary,
+            results: results,
           });
+        }
+      } else if (!podcastDetails) {
+        const data = await fetchPodcastsDetails(id);
+        const { results } = JSON.parse(data.contents);
+
+        detailsActions.setDetails({
+          lastFetched: new Date(),
+          trackId: results[0].trackId,
+          summary: summary,
+          results: results,
+        });
       }
-    } catch (e: any) {
-      console.error(e.message);
     }
-  };
+    const foundDetails = detailsState.detailsList.find(
+      (podcastDetails) => podcastDetails.trackId.toString() === id
+    );
+    if (foundDetails) setDetails(foundDetails);
+    else console.error("Failed to load data");
+  }, [detailsActions, detailsState.detailsList, id, summary]);
 
   useEffect(() => {
-    fetchPodcastDetails();
-  }, []);
+    fetchData();
+  });
   return (
     <div className={styles.page}>
       <div className={styles.details}>
         <p>Image</p>
-        <p>Name</p>
-        <p>Description</p>
+        <p>{details?.results[0].trackName}</p>
+        <p>by {details?.results[0].artistName}</p>
+        <p>Description:</p>
+        <p>{details?.summary}</p>
       </div>
       <div className={styles.episodes}>
-        <p className={styles.count}>Episodes: {episodesCount}</p>
+        <p className={styles.count}>
+          Episodes: {details?.results[0].trackCount}
+        </p>
 
         <table>
           <thead>
             <tr>
-              <th>Title</th>
+              <th>Title </th>
               <th>Date</th>
               <th>Duration</th>
             </tr>
           </thead>
           <tbody className={styles.table}>
-            {episodes.length > 0 &&
-              episodes.map((episode, index) => (
-                <tr key={index}>
-                  <td>{episode.trackName}</td>
-                  <td>{episode.releaseDate}</td>
-                  <td>{episode.trackTimeMillis}</td>
-                </tr>
-              ))}
+            {details?.results &&
+              details?.results.map((episode, index) => {
+                if (index > 0) {
+                  return (
+                    <tr key={index}>
+                      <td>{episode.trackName}</td>
+                      <td>{episode.releaseDate}</td>
+                      <td>{episode.trackTimeMillis}</td>
+                    </tr>
+                  );
+                }
+              })}
           </tbody>
         </table>
       </div>

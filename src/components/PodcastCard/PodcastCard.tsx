@@ -8,8 +8,11 @@ const PodcastCards = ({ feed }: IPodcastCard) => {
   const { entry } = feed;
   const router = useRouter();
 
-  const handleClick = (id: string) => {
-    router.push(`/podcast/${id}`);
+  const handleClick = (id: string, summary: string) => {
+    router.push(
+      { pathname: `/podcast/${id}`, query: { summary: summary } },
+      `/podcast/${id}`
+    );
   };
   return (
     <div className={styles.container}>
@@ -18,7 +21,9 @@ const PodcastCards = ({ feed }: IPodcastCard) => {
           <div
             key={index}
             className={styles.podcastCard}
-            onClick={() => handleClick(podcast.id.attributes["im:id"])}
+            onClick={() =>
+              handleClick(podcast.id.attributes["im:id"], podcast.summary.label)
+            }
           >
             <Image
               src={podcast["im:image"][0].label}

@@ -12,6 +12,7 @@ export const PodcastModel: IPodcastsModel = {
           "im:image": [{ label: "" }],
           "im:name": { label: "" },
           "im:price": { label: "" },
+          summary: { label: "" },
         },
       ],
     },
@@ -28,6 +29,6 @@ export const PodcastModel: IPodcastsModel = {
     state.lastFechted = payload;
   }),
   setFirstTimeFetch: action((state, payload) => {
-    state.firstTimeFetch = payload
-  })
+    state.firstTimeFetch = payload;
+  }),
 };

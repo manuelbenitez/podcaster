@@ -2,7 +2,7 @@ import { IPodcastCard } from "@/components/PodcastCard/PodcastCard.types";
 import {
   API_ORIGINS_URL,
   TOP_100_ITUNES_PODCASTS_URL,
-} from "@/pages/constants";
+} from "@/utils/constants";
 import axios from "axios";
 
 export async function fetchPodcasts() {

@@ -4,15 +4,14 @@ import PodcastCards from "@/components/PodcastCard/PodcastCard";
 import { fetchPodcasts } from "@/store/model/service";
 import { useStoreActions, useStoreState } from "../store";
 import { useCallback, useEffect } from "react";
+import { calculateDays } from "@/utils";
 
 export default function Home() {
   const addPodcastAction = useStoreActions((action) => action.podcasts);
   const state = useStoreState((state) => state.podcasts);
 
   const fetchData = useCallback(async () => {
-    const today = new Date();
-    const difference = state.lastFechted?.getTime() - today.getTime();
-    const totalDays = Math.abs(difference / (1000 * 3600 * 24));
+    const totalDays = calculateDays(state.lastFechted);
 
     if (state.firstTimeFetch === false || totalDays >= 1) {
       addPodcastAction.setFirstTimeFetch(true);
@@ -24,7 +23,6 @@ export default function Home() {
     }
   }, [addPodcastAction, state.lastFechted, state.firstTimeFetch]);
 
-  
   useEffect(() => {
     fetchData();
   });

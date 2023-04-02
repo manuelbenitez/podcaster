@@ -5,6 +5,7 @@ import { useStoreActions, useStoreState } from "@/store";
 import { fetchPodcastsDetails } from "@/store/model/service";
 import { IPodcastDetails } from "@/store/model/details/details.types";
 import Image from "next/image";
+import { calculateDays, refactorDate, refactorTime } from "@/utils";
 const PodcastDetailsPage = () => {
   const router = useRouter();
   const { id, summary } = router.query;
@@ -33,10 +34,7 @@ const PodcastDetailsPage = () => {
       );
 
       if (podcastDetails) {
-        const today = new Date();
-        const difference =
-          podcastDetails.lastFetched?.getTime() - today.getTime();
-        const totalDays = Math.abs(difference / (1000 * 3600 * 24));
+        const totalDays = calculateDays(podcastDetails.lastFetched);
 
         if (totalDays >= 1) {
           const data = await fetchPodcastsDetails(id);
@@ -117,9 +115,9 @@ const PodcastDetailsPage = () => {
                           <td className={styles.trackname}>
                             {episode.trackName}
                           </td>
-                          <td>{episode.releaseDate}</td>
+                          <td>{refactorDate(episode.releaseDate)}</td>
                           <td className={styles.time}>
-                            {episode.trackTimeMillis}
+                            {refactorTime(episode.trackTimeMillis)}
                           </td>
                         </tr>
                       );

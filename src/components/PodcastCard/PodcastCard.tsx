@@ -10,7 +10,6 @@ const PodcastCards = ({ feed }: IPodcastCard) => {
   const router = useRouter();
 
   const [value, setValue] = useState<string>("");
-  const [podcastCount, setPodcastCount] = useState<number>(0);
 
   const handleClick = (id: string, summary: string) => {
     router.push(
@@ -18,15 +17,10 @@ const PodcastCards = ({ feed }: IPodcastCard) => {
       `/podcast/${id}`
     );
   };
+
   return (
     <div className={styles.page}>
-      <div className={styles.filterContainer}>
-        <Filter
-          podcastCount={podcastCount ? podcastCount : 100}
-          onChange={setValue}
-          value={value}
-        />
-      </div>
+      <Filter podcastCount={entry.length} onChange={setValue} value={value} />
       <div className={styles.container}>
         {entry &&
           entry.map((podcast, index) => {

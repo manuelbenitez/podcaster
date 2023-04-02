@@ -9,6 +9,7 @@ function Filter({ onChange, podcastCount, value }: IFilterProps) {
         placeholder="Filter podcasts..."
         value={value}
         onChange={(e) => onChange(e.currentTarget.value)}
+        className={styles.input}
       />
     </div>
   );

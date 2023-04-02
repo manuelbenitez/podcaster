@@ -2,7 +2,6 @@ import React from "react";
 import { IPodcastDetailsProps } from "./PodcastDetails.types";
 import Image from "next/image";
 import styles from "./PodcastDetails.module.scss";
-import { createTypeReferenceDirectiveResolutionCache } from "typescript";
 import { useRouter } from "next/router";
 
 const PodcastDetails = ({

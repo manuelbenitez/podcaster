@@ -17,8 +17,8 @@ const EpisodeDetails = () => {
     title,
     description,
   } = router.query;
-
   const [episode, setEpisode] = useState<IEpisode>();
+
   useEffect(() => {
     setEpisode({
       trackId: id as string,

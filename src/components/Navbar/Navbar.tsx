@@ -1,6 +1,6 @@
 import { useStoreState } from "@/store";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "./Navbar.module.scss";
 
 const Navbar = () => {

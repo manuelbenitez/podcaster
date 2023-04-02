@@ -13,13 +13,10 @@ export interface IPodcastDetails {
   summary: string | string[] | undefined;
   results: [
     {
-      //Details
       trackName: string;
       artworkUrl100: string;
       artistName: string | undefined;
       description: string | undefined;
-
-      //Episodes
       trackCount: number | undefined;
       trackTimeMillis: number;
       releaseDate: string;

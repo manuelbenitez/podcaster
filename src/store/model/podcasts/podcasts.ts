@@ -1,5 +1,4 @@
-import { action, thunk } from "easy-peasy";
-import { fetchPodcasts } from "../service";
+import { action } from "easy-peasy";
 import { IPodcastsModel } from "./podcasts.types";
 
 export const PodcastModel: IPodcastsModel = {
@@ -18,6 +17,7 @@ export const PodcastModel: IPodcastsModel = {
     },
   },
 
+  isLoading: false,
   firstTimeFetch: false,
   lastFechted: new Date(),
 
@@ -30,5 +30,8 @@ export const PodcastModel: IPodcastsModel = {
   }),
   setFirstTimeFetch: action((state, payload) => {
     state.firstTimeFetch = payload;
+  }),
+  setIsLoading: action((state, payload) => {
+    state.isLoading = payload;
   }),
 };

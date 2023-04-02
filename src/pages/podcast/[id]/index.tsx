@@ -12,12 +12,15 @@ const PodcastDetailsPage = () => {
   const { id, summary } = router.query;
 
   const detailsActions = useStoreActions((actions) => actions.details);
+  const setIsLoading = useStoreActions(
+    (actions) => actions.podcasts.setIsLoading
+  );
+  const isLoading = useStoreState((state) => state.podcasts.isLoading);
   const detailsState = useStoreState((state) => state.details);
 
   const [details, setDetails] = useState<IPodcastDetails>();
 
   const handleClick = (episode: any) => {
-    console.log(episode);
     router.push(
       {
         pathname: `/podcast/${id}/episode/${episode.trackId}`,
@@ -36,6 +39,7 @@ const PodcastDetailsPage = () => {
     );
   };
   const fetchData = useCallback(async () => {
+    setIsLoading(true);
     if (detailsState.detailsList.length === 0) {
       const data = await fetchPodcastsDetails(id);
       const { results } = JSON.parse(data.contents);
@@ -82,9 +86,11 @@ const PodcastDetailsPage = () => {
     const foundDetails = detailsState.detailsList.find(
       (podcastDetails) => podcastDetails.trackId.toString() === id
     );
-    if (foundDetails) setDetails(foundDetails);
-    else console.error("Failed to load data");
-  }, [detailsActions, detailsState.detailsList, id, summary]);
+    if (foundDetails) {
+      setIsLoading(false);
+      setDetails(foundDetails);
+    } else console.error("Failed to load data");
+  }, [detailsActions, detailsState.detailsList, id, setIsLoading, summary]);
 
   useEffect(() => {
     fetchData();
@@ -92,7 +98,7 @@ const PodcastDetailsPage = () => {
 
   return (
     <div className={styles.page}>
-      {details && (
+      {details && !isLoading && (
         <>
           <PodcastDetails
             trackName={details?.results[0].trackName}

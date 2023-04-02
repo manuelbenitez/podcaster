@@ -7,25 +7,28 @@ import { useCallback, useEffect } from "react";
 import { calculateDays } from "@/utils";
 
 export default function Home() {
-  const addPodcastAction = useStoreActions((action) => action.podcasts);
+  const podcastActions = useStoreActions((action) => action.podcasts);
   const state = useStoreState((state) => state.podcasts);
 
   const fetchData = useCallback(async () => {
+    podcastActions.setIsLoading(true);
     const totalDays = calculateDays(state.lastFechted);
 
     if (state.firstTimeFetch === false || totalDays >= 1) {
-      addPodcastAction.setFirstTimeFetch(true);
+      podcastActions.setFirstTimeFetch(true);
       const podcasts = await fetchPodcasts();
       if (podcasts) {
-        addPodcastAction.setPodcasts(podcasts);
-        addPodcastAction.setLastFetched(new Date());
+        podcastActions.setPodcasts(podcasts);
+        podcastActions.setLastFetched(new Date());
       }
     }
-  }, [addPodcastAction, state.lastFechted, state.firstTimeFetch]);
+
+    podcastActions.setIsLoading(false);
+  }, [podcastActions, state.lastFechted, state.firstTimeFetch]);
 
   useEffect(() => {
     fetchData();
-  });
+  }, [fetchData]);
   return (
     <>
       <Head>
@@ -35,7 +38,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        {state.podcasts && <PodcastCards feed={state.podcasts.feed} />}
+        {state.podcasts && !state.isLoading && (
+          <PodcastCards feed={state.podcasts.feed} />
+        )}
       </main>
     </>
   );

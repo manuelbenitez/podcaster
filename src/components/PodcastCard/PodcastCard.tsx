@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React, { useState } from "react";
-import { IPodcastCard } from "./PodcastCard.types";
+import { IEntry, IPodcastCard } from "./PodcastCard.types";
 import styles from "./PodcastCard.module.scss";
 import { useRouter } from "next/router";
 import Filter from "../Filter/Filter";
@@ -23,7 +23,7 @@ const PodcastCards = ({ feed }: IPodcastCard) => {
       <Filter podcastCount={entry.length} onChange={setValue} value={value} />
       <div className={styles.container}>
         {entry &&
-          entry.map((podcast, index) => {
+          entry.map((podcast: IEntry, index: number) => {
             if (
               (value &&
                 podcast["im:artist"].label

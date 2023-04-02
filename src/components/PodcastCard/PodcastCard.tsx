@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { IEntry, IPodcastCard } from "./PodcastCard.types";
 import styles from "./PodcastCard.module.scss";
 import { useRouter } from "next/router";
@@ -10,6 +10,7 @@ const PodcastCards = ({ feed }: IPodcastCard) => {
   const router = useRouter();
 
   const [value, setValue] = useState<string>("");
+  const [filteredEntries, setFilteredEntries] = useState<Array<IEntry>>([]);
 
   const handleClick = (id: string, summary: string) => {
     router.push(
@@ -18,9 +19,33 @@ const PodcastCards = ({ feed }: IPodcastCard) => {
     );
   };
 
+  const handleChange = useCallback(
+    (filter: string) => {
+      setValue(filter);
+
+      const newEntries = entry.filter(
+        (podcast: IEntry) =>
+          podcast["im:artist"].label
+            .toLocaleLowerCase()
+            .includes(value.toLowerCase()) ||
+          podcast["im:name"].label.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredEntries(newEntries);
+    },
+    [entry, value]
+  );
+
+  useEffect(() => {
+    handleChange(value);
+  }, [handleChange, value]);
+
   return (
     <div className={styles.page}>
-      <Filter podcastCount={entry.length} onChange={setValue} value={value} />
+      <Filter
+        podcastCount={filteredEntries ? filteredEntries.length : entry.length}
+        onChange={handleChange}
+        value={value}
+      />
       <div className={styles.container}>
         {entry &&
           entry.map((podcast: IEntry, index: number) => {

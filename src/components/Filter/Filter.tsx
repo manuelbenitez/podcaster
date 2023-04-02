@@ -8,7 +8,7 @@ function Filter({ onChange, podcastCount, value }: IFilterProps) {
       <input
         placeholder="Filter podcasts..."
         value={value}
-        onChange={(e) => onChange(e.currentTarget.value)}
+        onChange={(e) => onChange(e.target.value)}
         className={styles.input}
       />
     </div>

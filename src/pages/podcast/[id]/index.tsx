@@ -1,11 +1,12 @@
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useState } from "react";
-import styles from "../../styles/PodcastDetailsPage.module.scss";
+import styles from "../../../styles/PodcastDetailsPage.module.scss";
 import { useStoreActions, useStoreState } from "@/store";
 import { fetchPodcastsDetails } from "@/store/model/service";
 import { IPodcastDetails } from "@/store/model/details/details.types";
 import Image from "next/image";
 import { calculateDays, refactorDate, refactorTime } from "@/utils";
+import PodcastDetails from "@/components/PodcastDetails/PodcastDetails";
 const PodcastDetailsPage = () => {
   const router = useRouter();
   const { id, summary } = router.query;
@@ -15,6 +16,25 @@ const PodcastDetailsPage = () => {
 
   const [details, setDetails] = useState<IPodcastDetails>();
 
+  const handleClick = (episode: any) => {
+    console.log(episode);
+    router.push(
+      {
+        pathname: `/podcast/${id}/episode/${episode.trackId}`,
+        query: {
+          trackName: details?.results[0].trackName,
+          artistName: details?.results[0].artistName,
+          summary: details?.summary,
+          artworkUrl100: details?.results[0].artworkUrl100,
+          previewUrl: episode.previewUrl,
+          description: episode.description,
+          title: episode.trackName,
+          id: id,
+        },
+      },
+      `/podcast/${id}/episode/${episode.trackId}`
+    );
+  };
   const fetchData = useCallback(async () => {
     if (detailsState.detailsList.length === 0) {
       const data = await fetchPodcastsDetails(id);
@@ -69,30 +89,18 @@ const PodcastDetailsPage = () => {
   useEffect(() => {
     fetchData();
   });
-  console.log(details);
+
   return (
     <div className={styles.page}>
       {details && (
         <>
-          <div className={styles.details}>
-            <Image
-              src={details?.results[0].artworkUrl100}
-              alt=""
-              width={100}
-              height={100}
-              className={styles.image}
-            />
-            <div className={styles.artist}>
-              <h5>{details?.results[0].trackName}</h5>
-              <p className={styles.description}>
-                by {details?.results[0].artistName}
-              </p>
-            </div>
-            <div>
-              <h6>Description:</h6>
-              <p className={styles.description}>{details?.summary}</p>
-            </div>
-          </div>
+          <PodcastDetails
+            trackName={details?.results[0].trackName}
+            artistName={details?.results[0].artistName}
+            summary={details?.summary}
+            artworkUrl100={details?.results[0].artworkUrl100}
+            id={id ? id : ""}
+          />
           <div className={styles.episodes}>
             <h4 className={styles.count}>
               Episodes: {details?.results[0].trackCount}
@@ -111,7 +119,11 @@ const PodcastDetailsPage = () => {
                   details?.results.map((episode, index) => {
                     if (index > 0) {
                       return (
-                        <tr key={index} className={styles.episode}>
+                        <tr
+                          key={index}
+                          className={styles.episode}
+                          onClick={() => handleClick(episode)}
+                        >
                           <td className={styles.trackname}>
                             {episode.trackName}
                           </td>

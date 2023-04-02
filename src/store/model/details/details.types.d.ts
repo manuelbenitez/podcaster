@@ -23,6 +23,7 @@ export interface IPodcastDetails {
       trackCount: number | undefined;
       trackTimeMillis: number;
       releaseDate: string;
+      trackId: number;
     }
   ];
 }

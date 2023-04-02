@@ -17,7 +17,7 @@ export const PodcastModel: IPodcastsModel = {
     },
   },
 
-  isLoading: false,
+  isLoading: true,
   firstTimeFetch: false,
   lastFechted: new Date(),
 

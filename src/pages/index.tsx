@@ -14,16 +14,19 @@ export default function Home() {
     podcastActions.setIsLoading(true);
     const totalDays = calculateDays(state.lastFechted);
 
-    if (state.firstTimeFetch === false || totalDays >= 1) {
-      podcastActions.setFirstTimeFetch(true);
-      const podcasts = await fetchPodcasts();
-      if (podcasts) {
-        podcastActions.setPodcasts(podcasts);
-        podcastActions.setLastFetched(new Date());
+    try {
+      if (state.firstTimeFetch === false || totalDays >= 1) {
+        podcastActions.setFirstTimeFetch(true);
+        const podcasts = await fetchPodcasts();
+        if (podcasts) {
+          podcastActions.setPodcasts(podcasts);
+          podcastActions.setLastFetched(new Date());
+        }
       }
+      podcastActions.setIsLoading(false);
+    } catch (e: any) {
+      console.error(e.message);
     }
-
-    podcastActions.setIsLoading(false);
   }, [podcastActions, state.lastFechted, state.firstTimeFetch]);
 
   useEffect(() => {
@@ -37,11 +40,11 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        {state.podcasts && !state.isLoading && (
+      {state.podcasts && !state.isLoading && (
+        <main className={styles.main}>
           <PodcastCards feed={state.podcasts.feed} />
-        )}
-      </main>
+        </main>
+      )}
     </>
   );
 }

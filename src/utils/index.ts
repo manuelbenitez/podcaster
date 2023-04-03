@@ -1,10 +1,3 @@
-import { IPodcastCard } from "@/components/PodcastCard/PodcastCard.types";
-import { useStoreActions, useStoreState } from "@/store";
-import { fetchPodcasts } from "@/store/model/service";
-import { ActionCreator } from "easy-peasy";
-import { useEffect, useState } from "react";
-import { API_ORIGINS_URL, TOP_100_ITUNES_PODCASTS_URL } from "./constants";
-
 export function refactorDate(date: string): string {
   const newDate = date.split("T");
   return newDate[0];

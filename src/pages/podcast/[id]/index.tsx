@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "../../../styles/PodcastDetailsPage.module.scss";
 import { useRouter } from "next/router";
-import { useStoreActions, useStoreState } from "@/store";
-import { refactorDate, refactorTime } from "@/utils";
+import { useStoreState } from "@/store";
 import PodcastDetails from "@/components/PodcastDetails/PodcastDetails";
 import useFetchPodcastDetails from "@/utils/useFetchPodcastDetails";
+import EpisodesList from "@/components/EpisodesList/EpisodesList";
 
 const PodcastDetailsPage = () => {
   const router = useRouter();
@@ -41,43 +41,7 @@ const PodcastDetailsPage = () => {
             artworkUrl100={foundDetails?.results[0].artworkUrl100}
             id={id ? id : ""}
           />
-          <div className={styles.episodes}>
-            <h4 className={styles.count}>
-              Episodes: {foundDetails?.results[0].trackCount}
-            </h4>
-
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th className={styles.title}>Title</th>
-                  <th className={styles.title}>Date</th>
-                  <th>Duration</th>
-                </tr>
-              </thead>
-              <tbody className={styles.tableBody}>
-                {foundDetails?.results &&
-                  foundDetails?.results.map((episode, index) => {
-                    if (index > 0) {
-                      return (
-                        <tr
-                          key={index}
-                          className={styles.episode}
-                          onClick={() => handleClick(episode)}
-                        >
-                          <td className={styles.trackname}>
-                            {episode.trackName}
-                          </td>
-                          <td>{refactorDate(episode.releaseDate)}</td>
-                          <td className={styles.time}>
-                            {refactorTime(episode.trackTimeMillis)}
-                          </td>
-                        </tr>
-                      );
-                    }
-                  })}
-              </tbody>
-            </table>
-          </div>
+          <EpisodesList details={foundDetails} handleClick={handleClick} />
         </>
       )}
     </div>

@@ -1,4 +1,25 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Podcaster es una aplicación para escuchar podcasts musicales.
+
+Consiste en 3 vistas principales:
+
+- Principal o Home Page, donde se puede ver un listado de los 100 podcasts mas populares en ITunes.
+- Detalles de un podcast, donde se puede ver el nombre, autor y descripción de un podcast, así como también se pueden ver la lista de los últimos 20 episodios del mismo.
+- Detalles del capitulo de un episodio, donde se puede ver una breve descripción del episodio selecionado en la vista anterior y reproducirlo.
+
+La arquitectura de la aplicación esta basada en un patrón de capas donde se descomponen los grupos en subtareas para el cual se utilizó Easy Peasy (Una abstracción de Redux. Mas info https://easy-peasy.vercel.app/).
+El modelo de la aplicación consiste en dos capaz:
+
+- La primera donde se obtiene el listado de los 100 podcasts mas populares, y se los guarda en el estado global de la aplicación, donde también se almacena los datos de la última vez que se realizó el fetch de los datos para poder hacer un request luego de que ha pasado un día completo.
+- La segunda es la cual donde se almacenan los detalles de un podcast en una lista a medida que el usuario va navegando por los diferentes podcasts, en la cual se almacena la última vez que se ha realizado el fetch de los detalles de un podcast, para poder hacer el request luego de 24hs.
+
+La librería de componentes se puede encontrar en /src/components
+
+- Navbar - Se encarga de mostarle al cliente cuando los datos estan cargando y también de poder navegar de nuevo hacia la página principal
+- Filter - Encargado de filtrar los podcast de la página principal
+- PodcastCard - Componente para representar cada elemento de el listado de podcasts en la página principal
+- PodcastDetails - Utilizado en los detalles de un podcast y un episodio, para mostrar Nombre, Autor y Descripción de un podcast, también encargado de navegar desde los detalles de un episodio hacia la vista anterior para poder volver a los detalles de un podcast
+
+
 
 ## Getting Started
 
@@ -13,26 +34,3 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

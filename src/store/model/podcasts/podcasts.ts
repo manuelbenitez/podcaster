@@ -17,6 +17,7 @@ export const PodcastModel: IPodcastsModel = {
     },
   },
 
+  value: "",
   isLoading: true,
   firstTimeFetch: false,
   lastFechted: new Date(),
@@ -33,5 +34,8 @@ export const PodcastModel: IPodcastsModel = {
   }),
   setIsLoading: action((state, payload) => {
     state.isLoading = payload;
+  }),
+  setValue: action((state, payload) => {
+    state.value = payload;
   }),
 };

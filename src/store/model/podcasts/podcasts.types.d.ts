@@ -6,7 +6,9 @@ export interface IPodcastsModel {
   lastFechted: Date;
   firstTimeFetch: boolean;
   isLoading: boolean;
+  value: string;
 
+  setValue: Action<IPodcastsModel, string>;
   setIsLoading: Action<IPodcastsModel, boolean>;
   setPodcasts: Action<IPodcastModel, IPodcastCard>;
   setLastFetched: Action<IPodcastsModel, Date>;

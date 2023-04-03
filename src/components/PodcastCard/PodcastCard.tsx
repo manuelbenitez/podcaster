@@ -4,13 +4,13 @@ import { IEntry, IPodcastCard } from "./PodcastCard.types";
 import styles from "./PodcastCard.module.scss";
 import { useRouter } from "next/router";
 import Filter from "../Filter/Filter";
+import { useStoreState } from "@/store";
 
 const PodcastCards = ({ feed }: IPodcastCard) => {
   const { entry } = feed;
   const router = useRouter();
 
-  const [value, setValue] = useState<string>("");
-  const [filteredEntries, setFilteredEntries] = useState<Array<IEntry>>([]);
+  const value = useStoreState((state) => state.podcasts.value);
 
   const handleClick = (id: string, summary: string) => {
     router.push(
@@ -19,33 +19,9 @@ const PodcastCards = ({ feed }: IPodcastCard) => {
     );
   };
 
-  const handleChange = useCallback(
-    (filter: string) => {
-      setValue(filter);
-
-      const newEntries = entry.filter(
-        (podcast: IEntry) =>
-          podcast["im:artist"].label
-            .toLocaleLowerCase()
-            .includes(value.toLowerCase()) ||
-          podcast["im:name"].label.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredEntries(newEntries);
-    },
-    [entry, value]
-  );
-
-  useEffect(() => {
-    handleChange(value);
-  }, [handleChange, value]);
-
   return (
     <div className={styles.page}>
-      <Filter
-        podcastCount={filteredEntries ? filteredEntries.length : entry.length}
-        onChange={handleChange}
-        value={value}
-      />
+      <Filter entry={entry} />
       <div className={styles.container}>
         {entry &&
           entry.map((podcast: IEntry, index: number) => {

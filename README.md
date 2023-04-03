@@ -20,6 +20,8 @@ La librería de componentes se puede encontrar en /src/components
 - PodcastDetails - Utilizado en los detalles de un podcast y un episodio, para mostrar Nombre, Autor y Descripción de un podcast, también encargado de navegar desde los detalles de un episodio hacia la vista anterior para poder volver a los detalles de un podcast
 
 
+Version en vivo de la aplicación: https://podcaster-lac.vercel.app/
+
 
 ## Getting Started
 

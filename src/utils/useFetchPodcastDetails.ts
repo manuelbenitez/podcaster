@@ -1,8 +1,16 @@
 import { useStoreActions, useStoreState } from "@/store";
+import { IPodcastDetails } from "@/store/model/details/details.types";
 import { useEffect } from "react";
 import { calculateDays } from ".";
 import { API_ORIGINS_URL } from "./constants";
 
+/**
+ *  Custom hook to fetch Podcast Details
+ *
+ * @param {string | string[] | undefined } id - id of the podcast to be fetched
+ * @param {string | string[] | undefined } summary - summary of the podcast to be fetched
+ * @returns {IPodcastDetails} - Podcast details found in the global state of the application
+ */
 const useFetchPodcastDetails = (
   id: string | string[] | undefined,
   summary: string | string[] | undefined

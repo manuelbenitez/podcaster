@@ -3,6 +3,9 @@ import { useEffect } from "react";
 import { calculateDays } from ".";
 import { TOP_100_ITUNES_PODCASTS_URL } from "./constants";
 
+/**
+ * Function to fetch TOP 100 ITunes podcasts and store them in the global state of the application
+ */
 const useFetchPodcasts = () => {
   const actions = useStoreActions((action) => action.podcasts);
   const state = useStoreState((state) => state.podcasts);

@@ -9,7 +9,7 @@ const Navbar = () => {
   return (
     <div className={styles.navbar}>
       <Link href="/">Podcaster</Link>
-      {isLoadingState && <p>Loading</p>}
+      {isLoadingState && <p>Loading...</p>}
     </div>
   );
 };

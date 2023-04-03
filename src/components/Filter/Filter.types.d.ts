@@ -1,5 +1,8 @@
+import { IEntry } from "../PodcastCard/PodcastCard.types";
+
 export interface IFilterProps {
-  podcastCount: number;
-  value: string;
-  onChange: (value: string) => void;
+  /**
+   * Podcasts list to be filtered
+   */
+  entry: IEntry[];
 }

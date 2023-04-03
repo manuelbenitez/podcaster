@@ -10,28 +10,31 @@ export const PodcastModel: IPodcastsModel = {
           "im:artist": { label: "" },
           "im:image": [{ label: "" }],
           "im:name": { label: "" },
-          "im:price": { label: "" },
           summary: { label: "" },
         },
       ],
     },
   },
 
+  value: "",
   isLoading: true,
   firstTimeFetch: false,
-  lastFechted: new Date(),
+  lastFetched: new Date(),
 
   setPodcasts: action((state, payload) => {
     state.podcasts = payload;
   }),
 
   setLastFetched: action((state, payload) => {
-    state.lastFechted = payload;
+    state.lastFetched = payload;
   }),
   setFirstTimeFetch: action((state, payload) => {
     state.firstTimeFetch = payload;
   }),
   setIsLoading: action((state, payload) => {
     state.isLoading = payload;
+  }),
+  setValue: action((state, payload) => {
+    state.value = payload;
   }),
 };

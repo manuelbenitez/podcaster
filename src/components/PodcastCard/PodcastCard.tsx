@@ -4,15 +4,18 @@ import { IEntry, IPodcastCard } from "./PodcastCard.types";
 import styles from "./PodcastCard.module.scss";
 import { useRouter } from "next/router";
 import Filter from "../Filter/Filter";
-import { useStoreState } from "@/store";
+import { useStoreActions, useStoreState } from "@/store";
 
 const PodcastCards = ({ feed }: IPodcastCard) => {
   const { entry } = feed;
   const router = useRouter();
 
   const value = useStoreState((state) => state.podcasts.value);
-
+  const setIsLoading = useStoreActions(
+    (actions) => actions.podcasts.setIsLoading
+  );
   const handleClick = (id: string, summary: string) => {
+    setIsLoading(true);
     router.push(
       { pathname: `/podcast/${id}`, query: { summary: summary } },
       `/podcast/${id}`

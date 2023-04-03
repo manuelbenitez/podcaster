@@ -1,37 +1,14 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import PodcastCards from "@/components/PodcastCard/PodcastCard";
-import { fetchPodcasts } from "@/store/model/service";
-import { useStoreActions, useStoreState } from "../store";
-import { useCallback, useEffect } from "react";
-import { calculateDays } from "@/utils";
+import { useStoreState } from "../store";
+import useFetchPodcasts from "@/utils/useFetchPodcasts";
 
 export default function Home() {
-  const podcastActions = useStoreActions((action) => action.podcasts);
   const state = useStoreState((state) => state.podcasts);
 
-  const fetchData = useCallback(async () => {
-    podcastActions.setIsLoading(true);
-    const totalDays = calculateDays(state.lastFechted);
+  useFetchPodcasts();
 
-    try {
-      if (state.firstTimeFetch === false || totalDays >= 1) {
-        podcastActions.setFirstTimeFetch(true);
-        const podcasts = await fetchPodcasts();
-        if (podcasts) {
-          podcastActions.setPodcasts(podcasts);
-          podcastActions.setLastFetched(new Date());
-        }
-      }
-      podcastActions.setIsLoading(false);
-    } catch (e: any) {
-      console.error(e.message);
-    }
-  }, [podcastActions, state.lastFechted, state.firstTimeFetch]);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
   return (
     <>
       <Head>

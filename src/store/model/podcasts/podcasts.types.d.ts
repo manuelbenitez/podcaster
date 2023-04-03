@@ -3,7 +3,7 @@ import { Action, Thunk } from "easy-peasy";
 
 export interface IPodcastsModel {
   podcasts: IPodcastCard;
-  lastFechted: Date;
+  lastFetched: Date;
   firstTimeFetch: boolean;
   isLoading: boolean;
   value: string;

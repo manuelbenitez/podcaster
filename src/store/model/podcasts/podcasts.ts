@@ -20,14 +20,14 @@ export const PodcastModel: IPodcastsModel = {
   value: "",
   isLoading: true,
   firstTimeFetch: false,
-  lastFechted: new Date(),
+  lastFetched: new Date(),
 
   setPodcasts: action((state, payload) => {
     state.podcasts = payload;
   }),
 
   setLastFetched: action((state, payload) => {
-    state.lastFechted = payload;
+    state.lastFetched = payload;
   }),
   setFirstTimeFetch: action((state, payload) => {
     state.firstTimeFetch = payload;

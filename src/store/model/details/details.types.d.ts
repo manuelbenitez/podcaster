@@ -2,7 +2,9 @@ import { Action } from "easy-peasy";
 
 export interface IDetailsModel {
   detailsList: IPodcastDetails[];
+  isLoading: boolean;
 
+  setIsLoading: Action<IDetailsModel, boolean>;
   setDetails: Action<IDetailsModel, IPodcastDetails>;
   updateDetails: Action<IDetailsModel, IPodcastDetails>;
 }

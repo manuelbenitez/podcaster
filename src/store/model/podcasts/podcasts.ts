@@ -10,7 +10,6 @@ export const PodcastModel: IPodcastsModel = {
           "im:artist": { label: "" },
           "im:image": [{ label: "" }],
           "im:name": { label: "" },
-          "im:price": { label: "" },
           summary: { label: "" },
         },
       ],

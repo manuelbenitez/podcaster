@@ -9,26 +9,17 @@ function Filter({ entry }: IFilterProps) {
 
   const setValue = useStoreActions((actions) => actions.podcasts.setValue);
   const value = useStoreState((state) => state.podcasts.value);
-  
-  const handleChange = useCallback(
-    (filter: string) => {
-      setValue(filter);
-
-      const newEntries = entry.filter(
-        (podcast: IEntry) =>
-          podcast["im:artist"].label
-            .toLocaleLowerCase()
-            .includes(value.toLowerCase()) ||
-          podcast["im:name"].label.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredEntries(newEntries);
-    },
-    [entry, setValue, value]
-  );
 
   useEffect(() => {
-    handleChange(value);
-  }, [handleChange, value]);
+    const newEntries = entry.filter(
+      (podcast: IEntry) =>
+        podcast["im:artist"].label
+          .toLocaleLowerCase()
+          .includes(value.toLowerCase()) ||
+        podcast["im:name"].label.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredEntries(newEntries);
+  }, [entry, value]);
 
   return (
     <div className={styles.filterContainer}>
@@ -36,7 +27,7 @@ function Filter({ entry }: IFilterProps) {
       <input
         placeholder="Filter podcasts..."
         value={value}
-        onChange={(e) => handleChange(e.target.value)}
+        onChange={(e) => setValue(e.target.value)}
         className={styles.input}
       />
     </div>

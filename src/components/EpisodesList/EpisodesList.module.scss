@@ -20,21 +20,6 @@
   padding: 1.5rem 0.7rem;
 }
 
-.tableBody {
-  .episode:nth-child(odd) {
-    background-color: rgba(185, 185, 185, 0.123);
-  }
-}
-
-.episode {
-  height: 40px;
-  cursor: pointer;
-
-  :hover {
-    background-color: rgba(128, 128, 128, 0.397);
-  }
-
-  .trackname {
-    color: rgb(55, 101, 138);
-  }
+.title {
+  text-align: start;
 }

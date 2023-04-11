@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import { IEntry, IPodcastCard } from "./PodcastCard.types";
 import styles from "./PodcastCard.module.scss";
 import { useRouter } from "next/router";
@@ -22,21 +22,25 @@ const PodcastCards = ({ feed }: IPodcastCard) => {
     );
   };
 
+  function findArtistAndName(podcast: IEntry): boolean {
+    if (
+      (value &&
+        podcast["im:artist"].label
+          .toLowerCase()
+          .includes(value.toLowerCase())) ||
+      podcast["im:name"].label.toLowerCase().includes(value.toLowerCase())
+    ) {
+      return true;
+    } else return false;
+  }
+
   return (
     <div className={styles.page}>
       <Filter entry={entry} />
       <div className={styles.container}>
         {entry &&
           entry.map((podcast: IEntry, index: number) => {
-            if (
-              (value &&
-                podcast["im:artist"].label
-                  .toLowerCase()
-                  .includes(value.toLowerCase())) ||
-              podcast["im:name"].label
-                .toLowerCase()
-                .includes(value.toLowerCase())
-            ) {
+            if (findArtistAndName(podcast)) {
               return (
                 <div
                   key={index}

@@ -22,6 +22,10 @@ export interface IPodcastsModel {
    * Value of the filter input on the home page
    */
   value: string;
+  /**
+   * Filter count
+   */
+  filterCount: number;
 
   /**
    * Action triggered set filter input value
@@ -43,4 +47,8 @@ export interface IPodcastsModel {
    * Action triggered to set state of the first time items have been fetched
    */
   setFirstTimeFetch: Action<IPodcastsModel, boolean>;
+  /**
+   * Action triggered to set state of filter count
+   */
+  setFilterCount: Action<IPodcastsModel, number>;
 }

@@ -17,9 +17,11 @@ export const PodcastModel: IPodcastsModel = {
   },
 
   value: "",
+  filterCount: 100,
   isLoading: true,
   firstTimeFetch: false,
   lastFetched: new Date(),
+
 
   setPodcasts: action((state, payload) => {
     state.podcasts = payload;
@@ -37,4 +39,7 @@ export const PodcastModel: IPodcastsModel = {
   setValue: action((state, payload) => {
     state.value = payload;
   }),
+  setFilterCount: action((state,payload) => {
+    state.filterCount = payload
+  })
 };
